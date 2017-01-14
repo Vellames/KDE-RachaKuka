@@ -1,3 +1,5 @@
+var matrixGame = [];
+
 /**
   * Create all the rects of the game
   * @author Cassiano Vellames <c.vellames@outlook.com>
@@ -7,12 +9,12 @@ function createComponents() {
     /**
       * Number of columns in game
       */
-    var gameColumns = 3;
+    var gameColumns = appWindow.columns;
 
     /**
       * Number of rows in game
       */
-    var gameRows = 3;
+    var gameRows = appWindow.rows;
 
     /**
       * Width of each rect
@@ -25,14 +27,9 @@ function createComponents() {
     var rectHeight = appWindow.height / gameRows;
 
     /**
-      * Margin between each rect
-      */
-    var margins = 2;
-
-    /**
       * Possible values to rects
       */
-    var possibleNumbers = [1,2,3,4,5,6,7,8];
+    var possibleNumbers = getPossibleNumbers(gameColumns, gameRows);
 
 
     // Create the rects
@@ -54,12 +51,16 @@ function createComponents() {
                 var params = {
                     actualColumn: columnsCount,
                     actualRow: rowsCount,
-                    x: ((columnsCount - 1) * appWindow.defaultWidth) + (columnsCount * margins),
-                    y: ((rowsCount - 1) * appWindow.defaultHeight) + (rowsCount * margins),
+                    x: ((columnsCount - 1) * appWindow.defaultWidth) + (columnsCount),
+                    y: ((rowsCount - 1) * appWindow.defaultHeight) + (rowsCount),
                     value: possibleNumbers[index]
                  };
 
                 var sprite = component.createObject(appWindow, params);
+
+                // Add the value in the array of rect values
+                console.log(possibleNumbers[index]);
+                matrixGame.push(possibleNumbers[index]);
 
                 // Remove used value
                 possibleNumbers.splice(index, 1);
@@ -99,10 +100,58 @@ function moveRect(rect){
     blankRect.actualRow = rectRow;
 
     // Apply the modification in X and Y in the rect
-    rect.x = getXRect(rect.actualColumn, appWindow.defaultWidth, 2);
-    rect.y = ((rect.actualRow - 1) * appWindow.defaultHeight) + (rect.actualRow * margins)
+    rect.x = getXRect(rect.actualColumn, appWindow.defaultWidth);
+    rect.y = getYRect(rect.actualRow, appWindow.defaultHeight);
+
+    // Check if the player win the game
+    checkConditionOfWin()
 }
 
-var getXRect = function(actualColumn, applicationWidth, margins){
-    return ((actualColumn - 1) * applicationWidth) + (actualColumn * margins)
+// ============= private functions =========== //
+
+var checkConditionOfWin = function(){
+    console.log(matrixGame.length);
+    for(var i = 0; i < matrixGame.length; i++){
+        console.log(matrixGame[i].value);
+    }
+}
+
+ /**
+  * Get the X axis based in column and application width
+  * @param int actualColumn - Number of column of the rect
+  * @param int applicationWidth - width of application
+  * @return int - X axis of rect
+  * @author Cassiano Vellames <c.vellames@outlook.com>
+  */
+var getXRect = function(actualColumn, applicationWidth){
+    return ((actualColumn - 1) * applicationWidth) + actualColumn
+}
+
+/**
+  * Get the Y axis based in passed row and application height
+  * @param int actualRow - Number of row of the rect
+  * @param int applicationHeight - Height of application
+  * @return int - Y axis of rect
+  * @author Cassiano Vellames <c.vellames@outlook.com>
+  */
+var getYRect = function(actualRow, applicationHeight) {
+    return (actualRow -1) * applicationHeight + actualColumn
+}
+
+/**
+  * Return an array with all possible numbers to put in the matrix game
+  * @param int gameColumns - Number of columns in game
+  * @param int gameRows - Number of rows in game
+  * @return array - Array with all possible numbers to put in matrixs game
+  * @author Cassiano Vellames <c.vellames@outlook.com>
+  */
+var getPossibleNumbers = function(gameColumns, gameRows){
+    var numberOfRects = (gameColumns * gameRows) - 1
+
+    var possibleNumbers = [];
+    for(var i = 1; i <= numberOfRects; i++){
+        possibleNumbers.push(i);
+    }
+
+    return possibleNumbers;
 }
