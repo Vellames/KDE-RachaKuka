@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>componentCreator.js</file>
         <file>Rect.qml</file>
+        <file>game_status.js</file>
     </qresource>
 </RCC>

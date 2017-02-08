@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import "componentCreator.js" as ComponentCreatorScript
-
+import "game_status.js" as GameStatus
 
 Item {
 
@@ -8,13 +8,15 @@ Item {
     property alias actualRow: rectangle.actualRow
     property alias value: rectangle.value
 
-    width: appWindow.defaultWidth
-    height: appWindow.defaultHeight
+    width: gameWindow.defaultWidth
+    height: gameWindow.defaultHeight
 
     Rectangle{
         id: rectangle
-        color: "red"
+        color: "#1F1F1F"
         anchors.fill: parent
+
+        border.color: "#121212"
 
         property int actualColumn : parent.actualColumn
         property int actualRow : parent.actualRow
@@ -23,6 +25,9 @@ Item {
         Text{
             anchors.centerIn: parent
             text: parent.value
+            color: "#FFFFFF"
+            font.pixelSize: 30
+            font.bold: Font.MixedCase
         }
 
         MouseArea{

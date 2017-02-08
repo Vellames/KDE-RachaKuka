@@ -1,5 +1,7 @@
 var matrixGame = [];
 
+var menuBarHeight = 20;
+
 /**
   * Create all the rects of the game
   * @author Cassiano Vellames <c.vellames@outlook.com>
@@ -9,28 +11,17 @@ function createComponents() {
     /**
       * Number of columns in game
       */
-    var gameColumns = appWindow.columns;
+    var gameColumns = gameWindow.columns;
 
     /**
       * Number of rows in game
       */
-    var gameRows = appWindow.rows;
-
-    /**
-      * Width of each rect
-      */
-    var rectWidth = appWindow.width / gameColumns;
-
-    /**
-      * Height of each rect
-      */
-    var rectHeight = appWindow.height / gameRows;
+    var gameRows = gameWindow.rows;
 
     /**
       * Possible values to rects
       */
     var possibleNumbers = getPossibleNumbers(gameColumns, gameRows);
-
 
     // Create the rects
     for(var columnsCount = 1; columnsCount <= gameColumns; columnsCount++){
@@ -51,15 +42,14 @@ function createComponents() {
                 var params = {
                     actualColumn: columnsCount,
                     actualRow: rowsCount,
-                    x: ((columnsCount - 1) * appWindow.defaultWidth) + (columnsCount),
-                    y: ((rowsCount - 1) * appWindow.defaultHeight) + (rowsCount),
+                    x: ((columnsCount - 1) * gameWindow.defaultWidth),
+                    y: ((rowsCount - 1) * gameWindow.defaultHeight) + gameStatus.height + menuBarHeight,
                     value: possibleNumbers[index]
                  };
 
-                var sprite = component.createObject(appWindow, params);
+                var sprite = component.createObject(gameWindow, params);
 
                 // Add the value in the array of rect values
-                console.log(possibleNumbers[index]);
                 matrixGame.push(possibleNumbers[index]);
 
                 // Remove used value
@@ -100,8 +90,10 @@ function moveRect(rect){
     blankRect.actualRow = rectRow;
 
     // Apply the modification in X and Y in the rect
-    rect.x = getXRect(rect.actualColumn, appWindow.defaultWidth);
-    rect.y = getYRect(rect.actualRow, appWindow.defaultHeight);
+    rect.x = getXRect(rect.actualColumn, gameWindow.defaultWidth);
+    rect.y = getYRect(rect.actualRow, gameWindow.defaultHeight);
+
+    GameStatus.incrementStep();
 
     // Check if the player win the game
     checkConditionOfWin()
@@ -110,10 +102,10 @@ function moveRect(rect){
 // ============= private functions =========== //
 
 var checkConditionOfWin = function(){
-    console.log(matrixGame.length);
+    /*console.log(matrixGame.length);
     for(var i = 0; i < matrixGame.length; i++){
         console.log(matrixGame[i].value);
-    }
+    }*/
 }
 
  /**
@@ -124,7 +116,7 @@ var checkConditionOfWin = function(){
   * @author Cassiano Vellames <c.vellames@outlook.com>
   */
 var getXRect = function(actualColumn, applicationWidth){
-    return ((actualColumn - 1) * applicationWidth) + actualColumn
+    return (actualColumn - 1) * applicationWidth
 }
 
 /**
@@ -135,7 +127,7 @@ var getXRect = function(actualColumn, applicationWidth){
   * @author Cassiano Vellames <c.vellames@outlook.com>
   */
 var getYRect = function(actualRow, applicationHeight) {
-    return (actualRow -1) * applicationHeight + actualColumn
+    return (actualRow -1) * applicationHeight  + gameStatus.height + menuBarHeight
 }
 
 /**
