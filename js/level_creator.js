@@ -23,6 +23,11 @@ function createComponents() {
       */
     var possibleNumbers = getPossibleNumbers(gameColumns, gameRows);
 
+    // Init matrixGame
+    for ( var i = 0; i < gameRows; i++ ) {
+        matrixGame[i] = [];
+    }
+
     // Create the rects
     for(var columnsCount = 1; columnsCount <= gameColumns; columnsCount++){
         for(var rowsCount = 1; rowsCount <= gameRows; rowsCount++){
@@ -30,33 +35,49 @@ function createComponents() {
             // If the creator are in the last rect, render an empty rect
             if(rowsCount === gameRows && columnsCount === gameColumns){
                 continue;
-                // TODO: Create empty rect
             }
 
-            var component = Qt.createComponent("Rect.qml");
+            var component = Qt.createComponent("../qml/rect.qml");
             if (component.status === Component.Ready){
 
                 // Get random index o put in value of rect
                 var index = Math.floor(Math.random() * (possibleNumbers.length - 1));
-
+                var value = possibleNumbers[index]
                 var params = {
                     actualColumn: columnsCount,
                     actualRow: rowsCount,
                     x: ((columnsCount - 1) * gameWindow.defaultWidth),
                     y: ((rowsCount - 1) * gameWindow.defaultHeight) + gameStatus.height + menuBarHeight,
-                    value: possibleNumbers[index]
+                    value: value
                  };
 
                 var sprite = component.createObject(gameWindow, params);
 
                 // Add the value in the array of rect values
-                matrixGame.push(possibleNumbers[index]);
+                matrixGame[rowsCount - 1][columnsCount - 1] = value;
 
                 // Remove used value
                 possibleNumbers.splice(index, 1);
             }
         }
     }
+
+    // Set the empty rect position
+    matrixGame[gameRows - 1][gameColumns - 1] = 0
+
+    // Reset blank position and show the blank rect
+    blankRect.visible = true
+
+    // Set the start game date
+    GameStatus.gameStartTime = new Date();
+
+    // Change game status
+    GameStatus.isPlaying = true;
+
+    // Reset Steps
+    GameStatus.resetSteps();
+
+    checkConditionOfWin();
 }
 
 /**
@@ -102,10 +123,9 @@ function moveRect(rect){
 // ============= private functions =========== //
 
 var checkConditionOfWin = function(){
-    /*console.log(matrixGame.length);
-    for(var i = 0; i < matrixGame.length; i++){
-        console.log(matrixGame[i].value);
-    }*/
+
+        console.log(matrixGame[0][0]);
+
 }
 
  /**

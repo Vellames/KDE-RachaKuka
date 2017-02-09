@@ -1,6 +1,6 @@
 import QtQuick 2.0
-import "componentCreator.js" as ComponentCreatorScript
-import "game_status.js" as GameStatus
+import "../js/level_creator.js" as LevelCreator
+import "../js/game_status.js" as GameStatus
 
 Item {
 
@@ -32,7 +32,7 @@ Item {
 
         MouseArea{
             anchors.fill: parent
-            onClicked: ComponentCreatorScript.moveRect(this.parent.parent)
+            onClicked: LevelCreator.moveRect(this.parent.parent)
         }
     }
 

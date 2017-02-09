@@ -2,8 +2,8 @@ import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.0
-import "componentCreator.js" as LevelCreator
-import "game_status.js" as GameStatus
+import "../js/level_creator.js" as LevelCreator
+import "../js/game_status.js" as GameStatus
 
 ApplicationWindow {
     // Aplication definitions
@@ -15,8 +15,16 @@ ApplicationWindow {
     minimumWidth : 600
     minimumHeight: 480
 
+    // Start always in center
+    x : Screen.width / 2 - width / 2
+    y : Screen.height / 2 - height / 2
+
+    // Close loader if he are open
+    onClosing: loader.source = ""
+
     title: qsTr("KDE - Racha KuKa")
     id: gameWindow
+
 
     // Default size of a rect
     property int defaultWidth : (width / columns)
@@ -28,9 +36,6 @@ ApplicationWindow {
 
     // Status
     property int actualStep : 0
-
-    // Call the level creator
-    Component.onCompleted: LevelCreator.createComponents();
 
     // Gameplay Timer
     Timer {
@@ -46,11 +51,24 @@ ApplicationWindow {
 
         Menu {
             title: "Game"
-            MenuItem { text: "New" }
-            MenuItem { text: "Configure..." }
+            MenuItem {
+                text: "New"
+                onTriggered: LevelCreator.createComponents()
+
+            }
+            MenuItem {
+                text: "Configure..."
+                onTriggered: {
+                    loader.source = "configure.qml"
+                }
+            }
         }
     }
 
+    // Loader
+    Loader { id: loader }
+
+    // Game Status
     Rectangle {
         id: gameStatus;
         color: "#0D0D0D";
@@ -98,6 +116,7 @@ ApplicationWindow {
         color: "#4A4A4A"
         width: gameWindow.defaultWidth
         height: gameWindow.defaultHeight
+        visible: false
 
         border.color: "#121212"
 

@@ -1,8 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>componentCreator.js</file>
-        <file>Rect.qml</file>
-        <file>game_status.js</file>
+        <file>qml/configure.qml</file>
+        <file>qml/rect.qml</file>
+        <file>qml/main.qml</file>
+        <file>js/game_status.js</file>
+        <file>js/level_creator.js</file>
     </qresource>
 </RCC>
