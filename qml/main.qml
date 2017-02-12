@@ -25,7 +25,6 @@ ApplicationWindow {
     title: qsTr("KDE - Racha KuKa")
     id: gameWindow
 
-
     // Default size of a rect
     property int defaultWidth : (width / columns)
     property int defaultHeight : (height / rows) - ((gameStatus.height + LevelCreator.menuBarHeight) / rows)
@@ -39,6 +38,7 @@ ApplicationWindow {
 
     // Gameplay Timer
     Timer {
+        id: gameplayTimer
         interval: 1000
         running: true
         repeat: true
@@ -108,45 +108,52 @@ ApplicationWindow {
 
     }
 
-    // It is necessary a blank rect to use as reference to another rects
-    // A rect can only be moved if he are in left, right, top or bottom of the blank rect
     Rectangle{
+        id: gameArea
 
-        id: blankRect
-        color: "#4A4A4A"
-        width: gameWindow.defaultWidth
-        height: gameWindow.defaultHeight
-        visible: false
+        // It is necessary a blank rect to use as reference to another rects
+        // A rect can only be moved if he are in left, right, top or bottom of the blank rect
+        Rectangle{
 
-        border.color: "#121212"
+            id: blankRect
+            color: "#4A4A4A"
+            width: gameWindow.defaultWidth
+            height: gameWindow.defaultHeight
+            visible: false
 
-        // The blank rect always will start in the last position of the matrix
-        property int actualColumn : gameWindow.rows
-        property int actualRow : gameWindow.columns
+            border.color: "#121212"
 
-        // Define the position of blank rect
-        x: (actualColumn - 1) * gameWindow.defaultWidth
-        y: (actualRow - 1) * gameWindow.defaultHeight + gameStatus.height
+            // The blank rect always will start in the last position of the matrix
+            property int actualColumn : gameWindow.rows
+            property int actualRow : gameWindow.columns
+            property int value: gameWindow.rows * gameWindow.columns
 
-        Behavior on x {
-            NumberAnimation {
-                easing {
-                    type: Easing.OutElastic
-                    amplitude: 1.0
-                    period: 5
+            // Define the position of blank rect
+            x: (actualColumn - 1) * gameWindow.defaultWidth
+            y: (actualRow - 1) * gameWindow.defaultHeight + gameStatus.height
+
+            Behavior on x {
+                NumberAnimation {
+                    easing {
+                        type: Easing.OutElastic
+                        amplitude: 1.0
+                        period: 5
+                    }
+                }
+            }
+
+            Behavior on y {
+                NumberAnimation {
+                    easing {
+                        type: Easing.OutElastic
+                        amplitude: 1.0
+                        period: 5
+                    }
                 }
             }
         }
 
-        Behavior on y {
-            NumberAnimation {
-                easing {
-                    type: Easing.OutElastic
-                    amplitude: 1.0
-                    period: 5
-                }
-            }
-        }
     }
+
 
 }

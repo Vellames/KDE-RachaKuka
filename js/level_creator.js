@@ -1,5 +1,3 @@
-var matrixGame = [];
-
 var menuBarHeight = 20;
 
 /**
@@ -22,16 +20,10 @@ function createComponents() {
       * Possible values to rects
       */
     var possibleNumbers = getPossibleNumbers(gameColumns, gameRows);
-
-    // Init matrixGame
-    for ( var i = 0; i < gameRows; i++ ) {
-        matrixGame[i] = [];
-    }
-
+    var i = 0;
     // Create the rects
-    for(var columnsCount = 1; columnsCount <= gameColumns; columnsCount++){
-        for(var rowsCount = 1; rowsCount <= gameRows; rowsCount++){
-
+    for(var rowsCount = 1; rowsCount <= gameRows; rowsCount++){
+        for(var columnsCount = 1; columnsCount <= gameColumns; columnsCount++){
             // If the creator are in the last rect, render an empty rect
             if(rowsCount === gameRows && columnsCount === gameColumns){
                 continue;
@@ -47,23 +39,17 @@ function createComponents() {
                     actualColumn: columnsCount,
                     actualRow: rowsCount,
                     x: ((columnsCount - 1) * gameWindow.defaultWidth),
-                    y: ((rowsCount - 1) * gameWindow.defaultHeight) + gameStatus.height + menuBarHeight,
-                    value: value
+                    y: ((rowsCount - 1) * gameWindow.defaultHeight) + gameStatus.height,
+                    value: ++i//value
                  };
 
-                var sprite = component.createObject(gameWindow, params);
-
-                // Add the value in the array of rect values
-                matrixGame[rowsCount - 1][columnsCount - 1] = value;
+                var sprite = component.createObject(gameArea, params);
 
                 // Remove used value
                 possibleNumbers.splice(index, 1);
             }
         }
     }
-
-    // Set the empty rect position
-    matrixGame[gameRows - 1][gameColumns - 1] = 0
 
     // Reset blank position and show the blank rect
     blankRect.visible = true
@@ -76,8 +62,6 @@ function createComponents() {
 
     // Reset Steps
     GameStatus.resetSteps();
-
-    checkConditionOfWin();
 }
 
 /**
@@ -117,16 +101,14 @@ function moveRect(rect){
     GameStatus.incrementStep();
 
     // Check if the player win the game
-    checkConditionOfWin()
+    if(GameStatus.playerWins()){
+        console.log("You Win");
+    }
 }
 
 // ============= private functions =========== //
 
-var checkConditionOfWin = function(){
 
-        console.log(matrixGame[0][0]);
-
-}
 
  /**
   * Get the X axis based in column and application width
@@ -147,7 +129,7 @@ var getXRect = function(actualColumn, applicationWidth){
   * @author Cassiano Vellames <c.vellames@outlook.com>
   */
 var getYRect = function(actualRow, applicationHeight) {
-    return (actualRow -1) * applicationHeight  + gameStatus.height + menuBarHeight
+    return (actualRow -1) * applicationHeight  + gameStatus.height
 }
 
 /**
