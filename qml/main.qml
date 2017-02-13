@@ -56,7 +56,7 @@ ApplicationWindow {
         Menu {
             title: "Game"
             MenuItem {
-                text: "New"
+                text: "New Game"
                 onTriggered: LevelCreator.createComponents()
 
             }
@@ -78,6 +78,20 @@ ApplicationWindow {
         anchors.fill: parent
     }
 
+    // Winner Message
+    Text {
+        id: txtGameWin
+        text: "Congratulations, You Win!"
+        font.pixelSize: 30
+        color: "#FFF"
+        anchors.centerIn: parent
+        opacity: 0
+
+        Behavior on opacity {
+            NumberAnimation { duration: 500 }
+        }
+    }
+
     // Game Status
     Rectangle {
         id: gameStatus;
@@ -95,11 +109,8 @@ ApplicationWindow {
                 id: steps;
                 text: "Steps: " + gameWindow.actualStep
                 color: "#FFFFFF"
-
                 font.pixelSize: 13
-
                 anchors.verticalCenter: parent.verticalCenter
-
                 Layout.minimumWidth: parent.width / 2
             }
 
@@ -107,11 +118,8 @@ ApplicationWindow {
                 id: gameplayTime
                 text: "Time: 0:00"
                 color: "#FFFFFF"
-
                 font.pixelSize: 13
-
                 anchors.verticalCenter: parent.verticalCenter
-
                 Layout.minimumWidth: parent.width / 2
             }
         }
@@ -123,13 +131,13 @@ ApplicationWindow {
 
         // It is necessary a blank rect to use as reference to another rects
         // A rect can only be moved if he are in left, right, top or bottom of the blank rect
-        Rectangle{
+        Rectangle {
 
             id: blankRect
             color: "#4A4A4A"
             width: gameWindow.defaultWidth
             height: gameWindow.defaultHeight
-            visible: false
+            opacity: 0;
 
             border.color: "#121212"
 
@@ -161,9 +169,13 @@ ApplicationWindow {
                     }
                 }
             }
+
+            Behavior on opacity {
+                NumberAnimation { duration: 500 }
+            }
+
         }
 
     }
-
 
 }

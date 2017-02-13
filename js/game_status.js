@@ -82,6 +82,13 @@ function playerWins(){
         }
     }
 
+    // Animate opacity of rects to 0 and text to 1
+    for(var i = 0; i < gameArea.children.length; i++){
+        gameArea.children[i].opacity = 0;
+    }
+    txtGameWin.opacity = 1;
+
+    // Reset game status
     isPlaying = false;
     gameplayTimer.stop();
     return true;

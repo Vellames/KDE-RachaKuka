@@ -11,7 +11,7 @@ function createComponents() {
     var possibleNumbers = getPossibleNumbers(gameColumns, gameRows);
 
     resetRects();
-
+    var i = 1;
     // Create the rects
     for(var rowsCount = 1; rowsCount <= gameRows; rowsCount++){
         for(var columnsCount = 1; columnsCount <= gameColumns; columnsCount++){
@@ -31,7 +31,7 @@ function createComponents() {
                     actualRow: rowsCount,
                     x: ((columnsCount - 1) * gameWindow.defaultWidth),
                     y: ((rowsCount - 1) * gameWindow.defaultHeight) + gameStatus.height,
-                    value: value
+                    value: i++ //value
                  };
 
                 var sprite = component.createObject(gameArea, params);
@@ -42,8 +42,11 @@ function createComponents() {
         }
     }
 
-    // Reset blank position and show the blank rect
-    blankRect.visible = true
+    // Adjust opacity to animate the start
+    for(var i = 0; i < gameArea.children.length; i++){
+        gameArea.children[i].opacity = 1;
+    }
+    txtGameWin.opacity = 0;
 
     // Set the start game date
     GameStatus.gameStartTime = new Date();

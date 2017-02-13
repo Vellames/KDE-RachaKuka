@@ -11,6 +11,8 @@ Item {
     width: gameWindow.defaultWidth
     height: gameWindow.defaultHeight
 
+    opacity: 0;
+
     Rectangle{
         id: rectangle
         color: "#1F1F1F"
@@ -55,4 +57,9 @@ Item {
             }
         }
     }
+
+    Behavior on opacity {
+        NumberAnimation { duration: 500 }
+    }
+
 }
