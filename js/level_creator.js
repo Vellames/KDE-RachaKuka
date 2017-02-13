@@ -6,21 +6,12 @@ var menuBarHeight = 20;
   */
 function createComponents() {
 
-    /**
-      * Number of columns in game
-      */
-    var gameColumns = gameWindow.columns;
-
-    /**
-      * Number of rows in game
-      */
-    var gameRows = gameWindow.rows;
-
-    /**
-      * Possible values to rects
-      */
+    var gameColumns = gameWindow.columns = gameWindow.nextColumns;
+    var gameRows = gameWindow.rows = gameWindow.nextRows;
     var possibleNumbers = getPossibleNumbers(gameColumns, gameRows);
-    var i = 0;
+
+    resetRects();
+
     // Create the rects
     for(var rowsCount = 1; rowsCount <= gameRows; rowsCount++){
         for(var columnsCount = 1; columnsCount <= gameColumns; columnsCount++){
@@ -40,7 +31,7 @@ function createComponents() {
                     actualRow: rowsCount,
                     x: ((columnsCount - 1) * gameWindow.defaultWidth),
                     y: ((rowsCount - 1) * gameWindow.defaultHeight) + gameStatus.height,
-                    value: ++i//value
+                    value: value
                  };
 
                 var sprite = component.createObject(gameArea, params);
@@ -69,7 +60,6 @@ function createComponents() {
   * @author Cassiano Vellames <c.vellames@outlook.com>
   */
 function moveRect(rect){
-
     // Verify the position of blank rect
     var blankInRight    = ((blankRect.actualColumn === (rect.actualColumn + 1) && blankRect.actualRow === rect.actualRow));
     var blankInLeft     = ((blankRect.actualColumn === (rect.actualColumn - 1) && blankRect.actualRow === rect.actualRow));
@@ -108,7 +98,21 @@ function moveRect(rect){
 
 // ============= private functions =========== //
 
+/**
+  * Destroy all rects in the gameArea
+  * @author Cassiano Vellames <c.vellames@outlook.com>
+  */
+var resetRects = function(){
+    //The first child is always the blankRect. You cant remove it
+    for(var i = 1; i < gameArea.children.length; i++){
+        gameArea.children[i].destroy();
+    }
 
+    // Reset the position and value of blankRect
+    blankRect.actualColumn = gameWindow.columns;
+    blankRect.actualRow = gameWindow.rows;
+    blankRect.value = gameWindow.columns * gameWindow.rows
+}
 
  /**
   * Get the X axis based in column and application width

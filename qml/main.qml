@@ -33,6 +33,10 @@ ApplicationWindow {
     property int rows : 3
     property int columns : 3
 
+    // Next "New Game" Configurations
+    property int nextRows : 3
+    property int nextColumns : 3
+
     // Status
     property int actualStep : 0
 
@@ -67,6 +71,12 @@ ApplicationWindow {
 
     // Loader
     Loader { id: loader }
+
+    // Background
+    Rectangle{
+        color: "#1C1C1C";
+        anchors.fill: parent
+    }
 
     // Game Status
     Rectangle {
