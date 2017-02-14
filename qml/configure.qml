@@ -131,7 +131,7 @@ ApplicationWindow {
             readOnly: true
             validator: IntValidator{
                 bottom: 3
-                top: 11
+                top: 10
             }
 
             Layout.fillWidth: true
@@ -154,7 +154,7 @@ ApplicationWindow {
             readOnly: true
             validator: IntValidator{
                 bottom: 3
-                top: 11
+                top: 10
             }
 
             Layout.fillWidth: true
@@ -168,9 +168,8 @@ ApplicationWindow {
         anchors.top: personalConfigLayout.bottom
         anchors.topMargin: 15
         anchors.horizontalCenter: parent.horizontalCenter
-        text: "Apply"
         width: 100
-        height: 30
+        height: 25
         style: ButtonStyle{
             background: Rectangle{
                 border.width: control.activeFocus ? 2 : 1
@@ -180,6 +179,11 @@ ApplicationWindow {
                     GradientStop { position: 0 ; color: control.pressed ? "#CECECE" : "#DDD" }
                     GradientStop { position: 1 ; color: control.pressed ? "#DCDCDC" : "#EEE" }
                 }
+            }
+            label: Text{
+                color: "#000";
+                text: "Apply"
+                horizontalAlignment: Text.AlignHCenter
             }
         }
 

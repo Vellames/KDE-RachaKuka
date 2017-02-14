@@ -1,4 +1,12 @@
+/**
+  * Size of menubar
+  */
 var menuBarHeight = 20;
+
+/**
+  * Controls if the game will run in test mode. If true, the matrix generated will be ordered
+  */
+var TEST_MODE = true;
 
 /**
   * Create all the rects of the game
@@ -9,9 +17,10 @@ function createComponents() {
     var gameColumns = gameWindow.columns = gameWindow.nextColumns;
     var gameRows = gameWindow.rows = gameWindow.nextRows;
     var possibleNumbers = getPossibleNumbers(gameColumns, gameRows);
+    var actualOrderedMatrixValue = 0; // Used to generate a ordered matrix
 
     resetRects();
-    var i = 1;
+
     // Create the rects
     for(var rowsCount = 1; rowsCount <= gameRows; rowsCount++){
         for(var columnsCount = 1; columnsCount <= gameColumns; columnsCount++){
@@ -20,7 +29,7 @@ function createComponents() {
                 continue;
             }
 
-            var component = Qt.createComponent("../qml/rect.qml");
+            var component = Qt.createComponent("../qml/Rect.qml");
             if (component.status === Component.Ready){
 
                 // Get random index o put in value of rect
@@ -31,7 +40,8 @@ function createComponents() {
                     actualRow: rowsCount,
                     x: ((columnsCount - 1) * gameWindow.defaultWidth),
                     y: ((rowsCount - 1) * gameWindow.defaultHeight) + gameStatus.height,
-                    value: i++ //value
+                    backgroundColor: "#1F1F1F",
+                    value: (TEST_MODE ? ++actualOrderedMatrixValue : value)
                  };
 
                 var sprite = component.createObject(gameArea, params);
@@ -50,12 +60,16 @@ function createComponents() {
 
     // Set the start game date
     GameStatus.gameStartTime = new Date();
+    gameplayTimer.start();
 
     // Change game status
-    GameStatus.isPlaying = true;
-
-    // Reset Steps
+    gameWindow.isPlaying = true;
     GameStatus.resetSteps();
+
+    // Check if for some reason the game generated a ordered matrix
+    if(!TEST_MODE && GameStatus.playerWins()){
+        createComponents();
+    }
 }
 
 /**
@@ -99,7 +113,31 @@ function moveRect(rect){
     }
 }
 
+
 // ============= private functions =========== //
+
+
+/**
+ * Get the X axis based in column and application width
+ * @param int actualColumn - Number of column of the rect
+ * @param int applicationWidth - width of application
+ * @return int - X axis of rect
+ * @author Cassiano Vellames <c.vellames@outlook.com>
+ */
+var getXRect = function(actualColumn, applicationWidth){
+   return (actualColumn - 1) * applicationWidth
+}
+
+/**
+ * Get the Y axis based in passed row and application height
+ * @param int actualRow - Number of row of the rect
+ * @param int applicationHeight - Height of application
+ * @return int - Y axis of rect
+ * @author Cassiano Vellames <c.vellames@outlook.com>
+ */
+var getYRect = function(actualRow, applicationHeight) {
+   return (actualRow -1) * applicationHeight  + gameStatus.height
+}
 
 /**
   * Destroy all rects in the gameArea
@@ -115,28 +153,6 @@ var resetRects = function(){
     blankRect.actualColumn = gameWindow.columns;
     blankRect.actualRow = gameWindow.rows;
     blankRect.value = gameWindow.columns * gameWindow.rows
-}
-
- /**
-  * Get the X axis based in column and application width
-  * @param int actualColumn - Number of column of the rect
-  * @param int applicationWidth - width of application
-  * @return int - X axis of rect
-  * @author Cassiano Vellames <c.vellames@outlook.com>
-  */
-var getXRect = function(actualColumn, applicationWidth){
-    return (actualColumn - 1) * applicationWidth
-}
-
-/**
-  * Get the Y axis based in passed row and application height
-  * @param int actualRow - Number of row of the rect
-  * @param int applicationHeight - Height of application
-  * @return int - Y axis of rect
-  * @author Cassiano Vellames <c.vellames@outlook.com>
-  */
-var getYRect = function(actualRow, applicationHeight) {
-    return (actualRow -1) * applicationHeight  + gameStatus.height
 }
 
 /**

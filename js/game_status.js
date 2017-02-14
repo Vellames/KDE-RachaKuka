@@ -4,11 +4,6 @@
 var gameStartTime = new Date();
 
 /**
-  * Control if the gaming is running
-  */
-var isPlaying = false;
-
-/**
  * Increment the step count
  * @author Cassiano Vellames <c.vellames@outlook.com>
  */
@@ -21,7 +16,6 @@ function incrementStep(){
  * Reset the steps count
  * @author Cassiano Vellames <c.vellames@outlook.com>
  */
-
 function resetSteps(){
     gameWindow.actualStep = 0;
 }
@@ -32,7 +26,7 @@ function resetSteps(){
  */
 function calcGamePlayTime(){
 
-    if(!isPlaying) {
+    if(!gameWindow.isPlaying) {
         return false;
     }
 
@@ -89,7 +83,7 @@ function playerWins(){
     txtGameWin.opacity = 1;
 
     // Reset game status
-    isPlaying = false;
+    gameWindow.isPlaying = false;
     gameplayTimer.stop();
     return true;
 }

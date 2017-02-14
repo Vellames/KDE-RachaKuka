@@ -1,6 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.2
 import QtQuick.Layouts 1.0
 import "../js/level_creator.js" as LevelCreator
 import "../js/game_status.js" as GameStatus
@@ -39,6 +40,7 @@ ApplicationWindow {
 
     // Status
     property int actualStep : 0
+    property bool isPlaying : false
 
     // Gameplay Timer
     Timer {
@@ -52,9 +54,9 @@ ApplicationWindow {
     // Menu Game
     menuBar: MenuBar {
         id: menuBar
-
         Menu {
             title: "Game"
+
             MenuItem {
                 text: "New Game"
                 onTriggered: LevelCreator.createComponents()
@@ -131,49 +133,15 @@ ApplicationWindow {
 
         // It is necessary a blank rect to use as reference to another rects
         // A rect can only be moved if he are in left, right, top or bottom of the blank rect
-        Rectangle {
-
+        Rect{
             id: blankRect
-            color: "#4A4A4A"
-            width: gameWindow.defaultWidth
-            height: gameWindow.defaultHeight
-            opacity: 0;
+            actualColumn: gameWindow.rows
+            actualRow : gameWindow.columns
+            value: gameWindow.rows * gameWindow.columns
+            backgroundColor: "#292929"
 
-            border.color: "#121212"
-
-            // The blank rect always will start in the last position of the matrix
-            property int actualColumn : gameWindow.rows
-            property int actualRow : gameWindow.columns
-            property int value: gameWindow.rows * gameWindow.columns
-
-            // Define the position of blank rect
             x: (actualColumn - 1) * gameWindow.defaultWidth
             y: (actualRow - 1) * gameWindow.defaultHeight + gameStatus.height
-
-            Behavior on x {
-                NumberAnimation {
-                    easing {
-                        type: Easing.OutElastic
-                        amplitude: 1.0
-                        period: 5
-                    }
-                }
-            }
-
-            Behavior on y {
-                NumberAnimation {
-                    easing {
-                        type: Easing.OutElastic
-                        amplitude: 1.0
-                        period: 5
-                    }
-                }
-            }
-
-            Behavior on opacity {
-                NumberAnimation { duration: 500 }
-            }
-
         }
 
     }
